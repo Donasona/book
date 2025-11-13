@@ -26,4 +26,15 @@ class Loginview(View):
         form = Loginform()
         return render(request,"login.html",{"form":form})
     
+    def post(self,request):
+        form = Loginform(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
+            user = authenticate(request,username=username,password=password)
+            if user:
+                login(request,user)
+                return redirect("register")
+        return render(request,"login.html")
+    
     
